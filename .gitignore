@@ -1,0 +1,56 @@
+# .gitignore
+
+# Local configuration files. Contains secrets, should not be in version control.
+.env
+.env.*.local
+
+# Go build artifacts and binaries
+# The name of your main binary (if you build in the root)
+go-db-blueprints
+go-db-blueprints.exe
+
+# Binaries from the cmd directory
+/cmd/example-database-sql/example-database-sql
+/cmd/example-database-sql/example-database-sql.exe
+/cmd/example-gorm/example-gorm
+/cmd/example-gorm/example-gorm.exe
+/cmd/example-sqlx/example-sqlx
+/cmd/example-sqlx/example-sqlx.exe
+
+# A common directory for built binaries
+/bin/
+/dist/
+
+# Go dependency directory (if you use vendor)
+/vendor/
+
+# Go test files and coverage reports
+*.test
+coverage.out
+coverage.txt
+profile.out
+
+# IDE and editor configuration directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-generated files
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Log files and temporary files
+*.log
+*.log.*
+*.swp
+*.swo
+*~
