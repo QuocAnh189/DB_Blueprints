@@ -24,3 +24,23 @@ type ListProductResponse struct {
 	Products   []*Product         `json:"items"`
 	Pagination *paging.Pagination `json:"metadata"`
 }
+
+type CreateProductRequest struct {
+	OwnerID int64   `json:"owner_id"`
+	Name    string  `json:"name"`
+	Price   float64 `json:"price"`
+}
+
+type CreateProductResponse struct {
+}
+
+type UpdateProductRequest struct {
+	ID     int64   `json:"id"`
+	UserID int64   `json:"user_id"`
+	Name   string  `json:"name" validate:"required"`
+	Price  float64 `json:"price" validate:"required"`
+	Owner  int64   `json:"owner" validate:"required"`
+}
+
+type UpdateProductResponse struct {
+}

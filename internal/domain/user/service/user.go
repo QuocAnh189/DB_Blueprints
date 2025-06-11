@@ -4,7 +4,8 @@ import (
 	"db_blueprints/internal/domain/user/repository"
 )
 
-type IUserService interface{}
+type IUserService interface {
+}
 
 type UserService struct {
 	gorm_repo repository.IUserGormRepository

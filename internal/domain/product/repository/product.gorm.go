@@ -11,7 +11,7 @@ import (
 
 type IProductGormRepository interface {
 	ListProducts(ctx context.Context, req *dto.ListProductRequest) ([]*model.Product, *paging.Pagination, error)
-	GetProductById(ctx context.Context, id string) (*model.Product, error)
+	GetProductById(ctx context.Context, id int64) (*model.Product, error)
 	CreatedProduct(ctx context.Context, product *model.Product) error
 	UpdateProduct(ctx context.Context, product *model.Product) error
 	DeleteProduct(ctx context.Context, product *model.Product) error
@@ -65,7 +65,7 @@ func (pr *ProductGormRepository) ListProducts(ctx context.Context, req *dto.List
 	return products, pagination, nil
 }
 
-func (pr *ProductGormRepository) GetProductById(ctx context.Context, id string) (*model.Product, error) {
+func (pr *ProductGormRepository) GetProductById(ctx context.Context, id int64) (*model.Product, error) {
 	var product model.Product
 	if err := pr.gorm_db.FindById(ctx, id, &product); err != nil {
 		return nil, err

@@ -11,7 +11,7 @@ import (
 
 type IUserGormRepository interface {
 	ListUsers(ctx context.Context, req *dto.ListUserRequest) ([]*model.User, *paging.Pagination, error)
-	GetUserById(ctx context.Context, id string) (*model.User, error)
+	GetUserById(ctx context.Context, id int64) (*model.User, error)
 	CreatedUser(ctx context.Context, user *model.User) error
 	UpdateUser(ctx context.Context, user *model.User) error
 	DeleteUser(ctx context.Context, user *model.User) error
@@ -65,7 +65,7 @@ func (pr *UserGormRepository) ListUsers(ctx context.Context, req *dto.ListUserRe
 	return users, pagination, nil
 }
 
-func (pr *UserGormRepository) GetUserById(ctx context.Context, id string) (*model.User, error) {
+func (pr *UserGormRepository) GetUserById(ctx context.Context, id int64) (*model.User, error) {
 	var user model.User
 	if err := pr.gorm_db.FindById(ctx, id, &user); err != nil {
 		return nil, err
