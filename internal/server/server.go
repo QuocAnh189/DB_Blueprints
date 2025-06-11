@@ -7,6 +7,9 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+
+	httpProduct "db_blueprints/internal/domain/product/controller/http"
+	httpUser "db_blueprints/internal/domain/user/controller/http"
 )
 
 type Server struct {
@@ -37,11 +40,8 @@ func (s Server) Run() error {
 
 func (s Server) MapRoutes() error {
 	routesV1 := s.engine.Group("/api")
-	routesV1.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello World",
-		})
-	})
 
+	httpProduct.Routes(routesV1, s.db)
+	httpUser.Routes(routesV1, s.db)
 	return nil
 }
