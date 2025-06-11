@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"db_blueprints/internal/config"
+	"fmt"
+)
 
 func main() {
-	fmt.Println("Hello, Gorm!")
+	cfg := config.LoadConfig()
+	fmt.Println(cfg)
 }
