@@ -1,5 +1,3 @@
-// internal/model/product.go
-
 package model
 
 import "time"

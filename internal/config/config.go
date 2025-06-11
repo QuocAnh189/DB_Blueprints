@@ -19,6 +19,7 @@ const (
 )
 
 type Config struct {
+	HTTP_PORT   string `mapstructure:"HTTP_PORT"`
 	DB_DRIVER   string `mapstructure:"DB_DRIVER"`
 	DB_USER     string `mapstructure:"DB_USER"`
 	DB_PASSWORD string `mapstructure:"DB_PASSWORD"`
@@ -39,6 +40,7 @@ func LoadConfig() *Config {
 	}
 
 	cfg = Config{
+		HTTP_PORT:   viper.GetString("HTTP_PORT"),
 		DB_DRIVER:   viper.GetString("DB_DRIVER"),
 		DB_USER:     viper.GetString("DB_USER"),
 		DB_PASSWORD: viper.GetString("DB_PASSWORD"),
