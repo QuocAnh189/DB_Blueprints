@@ -1,6 +1,8 @@
 package dto
 
-import "db_blueprints/gorm/pkgs/paging"
+import (
+	"db_blueprints/db_sql/pkgs/paging"
+)
 
 type User struct {
 	ID        int64  `json:"id"`

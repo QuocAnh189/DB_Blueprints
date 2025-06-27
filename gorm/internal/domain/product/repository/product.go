@@ -6,7 +6,7 @@ import (
 	db "db_blueprints/gorm/database"
 	"db_blueprints/gorm/internal/domain/product/controller/dto"
 	"db_blueprints/gorm/internal/model"
-	"db_blueprints/pkgs/paging"
+	"db_blueprints/gorm/pkgs/paging"
 )
 
 type IProductRepository interface {

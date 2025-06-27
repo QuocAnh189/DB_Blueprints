@@ -1,11 +1,11 @@
 package http
 
 import (
-	"db_blueprints/gorm/internal/domain/user/controller/dto"
-	"db_blueprints/gorm/internal/domain/user/service"
-	"db_blueprints/gorm/internal/model"
-	"db_blueprints/gorm/pkgs/response"
-	"db_blueprints/gorm/utils"
+	"db_blueprints/db_sql/internal/domain/user/controller/dto"
+	"db_blueprints/db_sql/internal/domain/user/service"
+	"db_blueprints/db_sql/internal/model"
+	"db_blueprints/db_sql/pkgs/response"
+	"db_blueprints/db_sql/utils"
 	"log"
 	"net/http"
 	"strconv"
@@ -51,7 +51,7 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 		log.Println("Failed to parse", err)
 	}
 
-	user, err := h.service.GetUserById(c, userId)
+	user, err := h.service.GetByID(c, userId)
 	if err != nil {
 		log.Println("Failed to get user", err)
 		response.Error(c, http.StatusInternalServerError, err, "Failed to get user")
@@ -101,7 +101,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	user, err := h.service.UpdateUser(c, &req)
+	user, err := h.service.UpdateUser(c, userId, &req)
 	if err != nil {
 		response.Error(c, http.StatusInternalServerError, err, "Something went wrong")
 		return

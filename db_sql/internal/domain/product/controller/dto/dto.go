@@ -1,18 +1,18 @@
 package dto
 
 import (
-	"db_blueprints/gorm/internal/domain/user/controller/dto"
-	"db_blueprints/gorm/pkgs/paging"
+	"db_blueprints/db_sql/internal/domain/user/controller/dto"
+	"db_blueprints/db_sql/pkgs/paging"
 )
 
 type Product struct {
-	ID        int64    `json:"id"`
-	Name      string   `json:"name"`
-	Price     float64  `json:"price"`
-	OwnerID   int64    `json:"owner_id"`
-	Owner     dto.User `json:"user"`
-	CreatedAt string   `json:"created_at"`
-	UpdatedAt string   `json:"updated_at"`
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	Price     float64   `json:"price"`
+	OwnerID   int64     `json:"owner_id"`
+	Owner     *dto.User `json:"user,omitempty"`
+	CreatedAt string    `json:"created_at"`
+	UpdatedAt string    `json:"updated_at"`
 }
 
 type ListProductRequest struct {

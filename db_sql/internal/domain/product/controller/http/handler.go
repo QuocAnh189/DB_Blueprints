@@ -1,13 +1,15 @@
 package http
 
 import (
-	"db_blueprints/gorm/internal/domain/product/controller/dto"
-	"db_blueprints/gorm/internal/domain/product/service"
-	"db_blueprints/gorm/pkgs/response"
-	"db_blueprints/gorm/utils"
 	"log"
 	"net/http"
 	"strconv"
+
+	"db_blueprints/db_sql/internal/domain/product/controller/dto"
+	"db_blueprints/db_sql/internal/domain/product/service"
+	"db_blueprints/db_sql/internal/model"
+	"db_blueprints/db_sql/pkgs/response"
+	"db_blueprints/db_sql/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,14 +25,14 @@ func NewProductHandler(service service.IProductService) *ProductHandler {
 func (h *ProductHandler) GetProducts(c *gin.Context) {
 	var req dto.ListProductRequest
 	if err := c.ShouldBind(&req); err != nil {
-		log.Println("Failed to get query", err)
+		log.Printf("Failed to bind query parameters: %v", err)
 		response.Error(c, http.StatusBadRequest, err, "Invalid parameters")
 		return
 	}
 
 	products, pagination, err := h.service.ListProducts(c, &req)
 	if err != nil {
-		log.Println("Failed to get products", err)
+		log.Printf("Failed to get products: %v", err)
 		response.Error(c, http.StatusInternalServerError, err, "Failed to get products")
 		return
 	}
@@ -43,16 +45,17 @@ func (h *ProductHandler) GetProducts(c *gin.Context) {
 }
 
 func (h *ProductHandler) GetProduct(c *gin.Context) {
-	var res dto.Product
+	var res model.Product
 
 	productId, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		log.Println("Failed to parse", err)
+		log.Printf("Failed to parse product ID from path: %v", err)
+		response.Error(c, http.StatusBadRequest, err, "Invalid product ID")
+		return
 	}
 
-	product, err := h.service.GetProductById(c, productId)
+	product, err := h.service.GetByID(c, productId)
 	if err != nil {
-		log.Println("Failed to get product", err)
 		response.Error(c, http.StatusInternalServerError, err, "Failed to get product")
 		return
 	}
@@ -65,13 +68,13 @@ func (h *ProductHandler) CreateProduct(c *gin.Context) {
 	var req dto.CreateProductRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Error(c, http.StatusBadRequest, err, "Invalid parameters")
+		response.Error(c, http.StatusBadRequest, err, "Invalid request body")
 		return
 	}
 
 	product, err := h.service.CreateProduct(c, &req)
 	if err != nil {
-		log.Println("Failed to create product", err)
+		log.Printf("Failed to create product: %v", err)
 		response.Error(c, http.StatusInternalServerError, err, "Failed to create product")
 		return
 	}
@@ -85,24 +88,22 @@ func (h *ProductHandler) CreateProduct(c *gin.Context) {
 func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 	var req dto.UpdateProductRequest
 
-	if err := c.ShouldBind(&req); err != nil {
-		response.Error(c, http.StatusBadRequest, err, "Invalid parameters")
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.Error(c, http.StatusBadRequest, err, "Invalid request body")
 		return
 	}
 
 	productId, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		log.Println("Failed to parse", err)
-	}
-
-	if productId != req.ID {
-		response.Error(c, http.StatusBadRequest, nil, "Product ID mismatch")
+		log.Printf("Failed to parse product ID from path: %v", err)
+		response.Error(c, http.StatusBadRequest, err, "Invalid product ID")
 		return
 	}
 
-	product, err := h.service.UpdateProduct(c, &req)
+	product, err := h.service.UpdateProduct(c, productId, &req)
 	if err != nil {
-		response.Error(c, http.StatusInternalServerError, err, "Something went wrong")
+		log.Printf("Failed to update product: %v", err)
+		response.Error(c, http.StatusInternalServerError, err, "Failed to update product")
 		return
 	}
 
@@ -115,15 +116,17 @@ func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 func (h *ProductHandler) DeleteProduct(c *gin.Context) {
 	productId, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		log.Println("Failed to parse", err)
-	}
-
-	err = h.service.DeleteProduct(c, productId)
-
-	if err != nil {
-		response.Error(c, http.StatusNotFound, err, "Not found")
+		log.Printf("Failed to parse product ID from path: %v", err)
+		response.Error(c, http.StatusBadRequest, err, "Invalid product ID")
 		return
 	}
 
-	response.JSON(c, http.StatusOK, "Delete user successfully")
+	err = h.service.DeleteProduct(c, productId)
+	if err != nil {
+		log.Printf("Failed to delete product: %v", err)
+		response.Error(c, http.StatusNotFound, err, err.Error())
+		return
+	}
+
+	response.JSON(c, http.StatusOK, gin.H{"message": "Delete product successfully"})
 }
