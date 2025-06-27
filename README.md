@@ -16,7 +16,7 @@ Follow these steps to set up and run the project on your local machine.
 
     ```bash
     git clone https://github.com/QuocAnh189/DB_Blueprints
-    cd go-db-blueprints
+    cd DB_Blueprints
     ```
 
 2.  **Configure the Environment**
