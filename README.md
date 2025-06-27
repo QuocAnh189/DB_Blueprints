@@ -15,7 +15,7 @@ Follow these steps to set up and run the project on your local machine.
 1.  **Clone the repository**
 
     ```bash
-    git clone [https://github.com/your-username/go-db-blueprints.git](https://github.com/your-username/go-db-blueprints.git)
+    git clone https://github.com/QuocAnh189/DB_Blueprints
     cd go-db-blueprints
     ```
 
@@ -44,27 +44,19 @@ After completing the setup, you can run each example with the following commands
 - **Run the `database/sql` example:**
 
   ```bash
-  go run ./cmd/database_sql/main.go
+  make db_sql
   ```
 
 - **Run the `GORM` example:**
 
   ```bash
-  go run ./cmd/gorm/main.go
+  make gorm
   ```
 
 - **Run the `sqlx` example:**
   ```bash
-  go run ./cmd/sqlx/main.go
+  make sqlx
   ```
-
-## How to Add a New Pattern
-
-1.  Create a new directory in `blueprints/` (e.g., `blueprints/ent/`).
-2.  Implement the repository logic in that directory.
-3.  Create a new example directory in `cmd/` (e.g., `cmd/example-ent/`).
-4.  Write the `main.go` file inside it to call the logic from the `blueprints` package you just created.
-5.  Update this `README.md` to add your new pattern to the list!
 
 ## License
 
